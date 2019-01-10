@@ -12,7 +12,6 @@ import edu.unice.messenger.smart_monument.NFCHelper.TagReaded;
 
 public class MainActivity extends Activity {
 
-    private String messageNDEF;
     private String tagUID;
     private Tag tag;
 
@@ -50,7 +49,7 @@ public class MainActivity extends Activity {
             byte[] id = tag.getId();
             tagUID = byteArrayToHex(id).toUpperCase();
             TagReaded tagReaded = new TagReaded();
-            tagReaded.setTagId(tagUID);
+            tagReaded.setTagUID(tagUID);
         }
     }
 
