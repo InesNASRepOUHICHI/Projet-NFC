@@ -8,7 +8,6 @@ import android.nfc.Tag;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import edu.unice.messenger.smart_monument.NFCHelper.Utils;
 
@@ -72,9 +71,7 @@ public class MainActivity extends Activity {
             tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             byte[] id = tag.getId();
             tagUID = byteArrayToHex(id).toUpperCase();
-            Utils utils = new Utils();
-            utils.setTagUID(tagUID);
-            Toast.makeText(getApplicationContext(), tagUID, Toast.LENGTH_LONG).show();
+            Utils.tagUID = tagUID;
             // Launching the NouveauMonumentActivity
             Intent intent2 = new Intent(MainActivity.this, NouveauMonumentActivity.class);
             startActivity(intent2);

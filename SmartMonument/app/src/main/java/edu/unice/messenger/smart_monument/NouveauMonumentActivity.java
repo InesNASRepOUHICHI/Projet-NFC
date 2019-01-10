@@ -86,13 +86,14 @@ public class NouveauMonumentActivity extends AppCompatActivity {
         JsonArrayRequest request = new RestClient().createJsonArrayRequestWithHeaders(Request.Method.GET, ServerConfig.URL_GET_MONUMENTS, null, new Response.Listener<JSONArray>() {
 
             public void onResponse(JSONArray  response) {
-                String tagReaded = new Utils().getTagUID();
+                String tagReaded = Utils.tagUID;
                 try {
                     for(int i=0; i<response.length(); i++){
                         // Get current json object
                         JSONObject message = response.getJSONObject(i);
                         Monument m = new Monument(message.getString("id"),message.getString("titre"),message.getString("description"),message.getString("image"));
                         monuments.add(m);
+
                         if (m.getId().equals(tagReaded)) {
                             edtIdMonument.setText(m.getId());
                             edtTitreMonument.setText(m.getTitre());
@@ -116,8 +117,9 @@ public class NouveauMonumentActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),
                         "Erreur de réception des messages: "+error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }, null);
+        });
 
-
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(request, "GET Monument Datas");
     }
 }
