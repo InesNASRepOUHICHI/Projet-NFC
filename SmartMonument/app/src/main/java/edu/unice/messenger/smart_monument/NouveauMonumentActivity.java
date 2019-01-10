@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,13 +19,17 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.unice.messenger.smart_monument.Database.SQLiteHandler;
 import edu.unice.messenger.smart_monument.Model.Monument;
-import edu.unice.messenger.smart_monument.NFCHelper.TagReaded;
+import edu.unice.messenger.smart_monument.NFCHelper.Utils;
 import edu.unice.messenger.smart_monument.Service.RestClient;
 import edu.unice.messenger.smart_monument.Service.ServerConfig;
 
 public class NouveauMonumentActivity extends AppCompatActivity {
 
+
+    private SQLiteHandler db;
     private Button btnSauvegarder;
     private Button btnRetour;
     private TextView edtIdMonument;
@@ -39,6 +42,9 @@ public class NouveauMonumentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nouveau_monument);
+
+        // SQLite database handler
+        db = new SQLiteHandler(getApplicationContext());
 
         edtIdMonument = (TextView) findViewById(R.id.idIdMonument);
         edtTitreMonument = (TextView) findViewById(R.id.idTitre);
@@ -61,9 +67,13 @@ public class NouveauMonumentActivity extends AppCompatActivity {
         btnSauvegarder = (Button) findViewById(R.id.btnSauvegarder);
         btnSauvegarder.setOnClickListener(new View.OnClickListener() {
 
-            /* TODO : méthode de sauvegrde*/
             @Override
             public void onClick(View v) {
+                Monument m = Utils.monument;
+                db.addMonument(m);
+
+                Toast.makeText(getApplicationContext(),
+                        "Monument bien sauvegardé", Toast.LENGTH_LONG).show();
                 // Launching the HistoriqueVisitesActivity
                 Intent intent = new Intent(NouveauMonumentActivity.this, MainActivity.class);
                 startActivity(intent);
@@ -76,7 +86,7 @@ public class NouveauMonumentActivity extends AppCompatActivity {
         JsonArrayRequest request = new RestClient().createJsonArrayRequestWithHeaders(Request.Method.GET, ServerConfig.URL_GET_MONUMENTS, null, new Response.Listener<JSONArray>() {
 
             public void onResponse(JSONArray  response) {
-                String tagReaded = new TagReaded().getTagUID();
+                String tagReaded = new Utils().getTagUID();
                 try {
                     for(int i=0; i<response.length(); i++){
                         // Get current json object
@@ -88,6 +98,7 @@ public class NouveauMonumentActivity extends AppCompatActivity {
                             edtTitreMonument.setText(m.getTitre());
                             edtDescriptionMonument.setText(m.getDescription());
                             edtImageLinkMonument.setText(m.getImage());
+                            Utils.monument = m;
                         }
                     }
 

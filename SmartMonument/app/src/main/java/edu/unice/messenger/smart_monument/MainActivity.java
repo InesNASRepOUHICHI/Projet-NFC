@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import edu.unice.messenger.smart_monument.NFCHelper.TagReaded;
+import edu.unice.messenger.smart_monument.NFCHelper.Utils;
 
 public class MainActivity extends Activity {
 
@@ -48,8 +48,8 @@ public class MainActivity extends Activity {
             tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             byte[] id = tag.getId();
             tagUID = byteArrayToHex(id).toUpperCase();
-            TagReaded tagReaded = new TagReaded();
-            tagReaded.setTagUID(tagUID);
+            Utils utils = new Utils();
+            utils.setTagUID(tagUID);
         }
     }
 
