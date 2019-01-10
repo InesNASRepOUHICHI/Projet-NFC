@@ -50,6 +50,10 @@ public class MainActivity extends Activity {
             tagUID = byteArrayToHex(id).toUpperCase();
             Utils utils = new Utils();
             utils.setTagUID(tagUID);
+            // Launching the NouveauMonumentActivity
+            Intent intent2 = new Intent(MainActivity.this, NouveauMonumentActivity.class);
+            startActivity(intent2);
+            finish();
         }
     }
 
