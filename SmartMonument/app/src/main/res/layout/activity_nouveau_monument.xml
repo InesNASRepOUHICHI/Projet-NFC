@@ -2,40 +2,45 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center">
 
     <TextView
         android:id="@+id/idIdMonument"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:textSize="14dp" />
+        android:textSize="14dp"
+        android:text="idIdMonument"/>
 
     <TextView
         android:id="@+id/idTitre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:textSize="14dp" />
+        android:textSize="14dp"
+        android:text="idTitre"/>
 
     <TextView
         android:id="@+id/idDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:textSize="14dp" />
+        android:textSize="14dp"
+        android:text="idDescription"/>
 
     <TextView
         android:id="@+id/idImageLink"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:textSize="14dp" />
+        android:textSize="14dp"
+        android:text="idImageLink"/>
 
     <ImageView
         android:id="@+id/imageView1"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:gravity="center_horizontal"
         android:src="@drawable/tagnfc" />
 
@@ -43,7 +48,8 @@
         android:id="@+id/btnSauvegarder"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dip"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="10dip"
         android:background="@null"
         android:text="Sauvegarder"
         android:textAllCaps="false"
@@ -53,7 +59,8 @@
         android:id="@+id/btnReour"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dip"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dip"
         android:background="@null"
         android:text="Retour"
         android:textAllCaps="false"

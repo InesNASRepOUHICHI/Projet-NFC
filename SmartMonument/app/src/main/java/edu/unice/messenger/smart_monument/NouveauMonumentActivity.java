@@ -1,10 +1,14 @@
 package edu.unice.messenger.smart_monument;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +21,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +42,7 @@ public class NouveauMonumentActivity extends AppCompatActivity {
     private TextView edtTitreMonument;
     private TextView edtDescriptionMonument;
     private TextView edtImageLinkMonument;
+    private ImageView iv;
     List<Monument> monuments = new ArrayList<Monument>();
 
     @Override
@@ -48,8 +55,9 @@ public class NouveauMonumentActivity extends AppCompatActivity {
 
         edtIdMonument = (TextView) findViewById(R.id.idIdMonument);
         edtTitreMonument = (TextView) findViewById(R.id.idTitre);
-        edtDescriptionMonument = (TextView) findViewById(R.id.idTitre);
+        edtDescriptionMonument = (TextView) findViewById(R.id.idDescription);
         edtImageLinkMonument = (TextView) findViewById(R.id.idImageLink);
+        iv = (ImageView) findViewById(R.id.imageView1);
 
         btnRetour = (Button) findViewById(R.id.btnReour);
         btnRetour.setOnClickListener(new View.OnClickListener() {
@@ -95,10 +103,11 @@ public class NouveauMonumentActivity extends AppCompatActivity {
                         monuments.add(m);
 
                         if (m.getId().equals(tagReaded)) {
-                            edtIdMonument.setText(m.getId());
-                            edtTitreMonument.setText(m.getTitre());
-                            edtDescriptionMonument.setText(m.getDescription());
-                            edtImageLinkMonument.setText(m.getImage());
+                            edtIdMonument.setText("ID: "+m.getId());
+                            edtTitreMonument.setText("Titre: "+m.getTitre());
+                            edtDescriptionMonument.setText("Description: "+m.getDescription());
+                            edtImageLinkMonument.setText("Lien vers l'image: "+m.getImage());
+                            new DownLoadImageTask(iv).execute(m.getImage());
                             Utils.monument = m;
                         }
                     }
@@ -115,11 +124,47 @@ public class NouveauMonumentActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(),
-                        "Erreur de réception des messages: "+error.getMessage(), Toast.LENGTH_LONG).show();
+                        "Erreur de réception des monuments: "+error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(request, "GET Monument Datas");
+    }
+}
+
+ class DownLoadImageTask extends AsyncTask<String,Void,Bitmap> {
+    ImageView imageView;
+
+    public DownLoadImageTask(ImageView imageView){
+        this.imageView = imageView;
+    }
+
+    /*
+        doInBackground(Params... params)
+            Override this method to perform a computation on a background thread.
+     */
+    protected Bitmap doInBackground(String...urls){
+        String urlOfImage = urls[0];
+        Bitmap logo = null;
+        try{
+            InputStream is = new URL(urlOfImage).openStream();
+                /*
+                    decodeStream(InputStream is)
+                        Decode an input stream into a bitmap.
+                 */
+            logo = BitmapFactory.decodeStream(is);
+        }catch(Exception e){ // Catch the download exception
+            e.printStackTrace();
+        }
+        return logo;
+    }
+
+    /*
+        onPostExecute(Result result)
+            Runs on the UI thread after doInBackground(Params...).
+     */
+    protected void onPostExecute(Bitmap result){
+        imageView.setImageBitmap(result);
     }
 }
